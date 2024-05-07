@@ -1,3 +1,5 @@
+/* Nav Bar */
+
 document.addEventListener('DOMContentLoaded', function () {
     // Toggle para el menú móvil
     const menuButton = document.querySelector('[aria-controls="mobile-menu"]');
