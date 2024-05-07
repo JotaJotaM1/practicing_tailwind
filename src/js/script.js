@@ -29,3 +29,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+/* FAQS */
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Seleccionar todos los botones de los acordeones
+    const accordionButtons = document.querySelectorAll('.accordion-toggle');
+
+    accordionButtons.forEach(button => {
+        const accordionContent = button.nextElementSibling;
+        // Asegurarse de que el contenido esté inicialmente oculto
+        accordionContent.classList.add('hidden');
+
+        button.addEventListener('click', function () {
+            // Alternar la clase 'hidden' para mostrar/ocultar el contenido del acordeón
+            accordionContent.classList.toggle('hidden');
+
+            // Opcional: Alternar la rotación del icono del acordeón
+            const icon = button.querySelector('svg');
+            icon.classList.toggle('rotate-180');
+        });
+    });
+});
+
