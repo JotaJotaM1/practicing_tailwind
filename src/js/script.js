@@ -55,3 +55,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+// Stripe
+
+var stripe = Stripe('pk_test_51PDrJ6KNL9CjG5re81t5kukFjTMYw7r5TSdCUUVeg4V42Fc40sWZAATGRmZulSX0ZyBkcXsm08WQGapuIvhL8gm0004fqkK4Ho'); // Reemplaza con tu clave pública de Stripe
+var checkoutButton = document.getElementById('checkout-button');
+
+checkoutButton.addEventListener('click', function () {
+    fetch('/create-checkout-session', { // URL relativa
+        method: 'POST',
+    })
+    .then(function (response) {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(function (session) {
+        return stripe.redirectToCheckout({ sessionId: session.id });
+    })
+    .then(function (result) {
+        if (result.error) {
+            alert(result.error.message);
+        }
+    })
+    .catch(function (error) {
+        console.error('Error:', error);
+    });
+});
+
+
+
+

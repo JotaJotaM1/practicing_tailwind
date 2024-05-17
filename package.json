@@ -3,6 +3,9 @@
     "tailwindcss": "^3.4.3"
   },
   "dependencies": {
-    "@tailwindcss/aspect-ratio": "^0.4.2"
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "stripe": "^15.7.0"
   }
 }
