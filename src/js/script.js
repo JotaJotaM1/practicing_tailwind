@@ -1,3 +1,4 @@
+
 /* Nav Bar */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -9,14 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const expanded = this.getAttribute('aria-expanded') === 'true' || false;
         this.setAttribute('aria-expanded', !expanded);
         mobileMenu.classList.toggle('hidden');
-    });
-
-    // Toggle para el menú desplegable del usuario
-    const userMenuButton = document.getElementById('user-menu-button');
-    const userMenu = document.querySelector('.relative div[role="menu"]');
-
-    userMenuButton.addEventListener('click', function () {
-        userMenu.classList.toggle('hidden');
     });
 
     // Click fuera de los menús para cerrarlos
@@ -55,88 +48,116 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-/* Stripe */
-
-document.addEventListener('DOMContentLoaded', function() {
-    const stripe = Stripe('pk_test_51PDrJ6KNL9CjG5re81t5kukFjTMYw7r5TSdCUUVeg4V42Fc40sWZAATGRmZulSX0ZyBkcXsm08WQGapuIvhL8gm0004fqkK4Ho'); // Reemplaza con tu clave pública de Stripe
-    const buyButton = document.getElementById('buy-button');
-    const checkoutForm = document.getElementById('checkout-form');
+/* Add to Cart */
+document.addEventListener('DOMContentLoaded', function () {
+    const decreaseButton = document.getElementById('decrease');
+    const increaseButton = document.getElementById('increase');
+    const quantityInput = document.getElementById('quantity');
+    const addToCartButton = document.getElementById('add-to-cart');
+    const cart = document.getElementById('shopping-cart');
+    const cartItems = document.getElementById('cart-items');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const closeCartButton = document.getElementById('close-cart');
     const checkoutButton = document.getElementById('checkout-button');
 
-    if (buyButton) {
-        buyButton.addEventListener('click', function () {
-            checkoutForm.classList.remove('hidden');
-            window.scrollTo(0, checkoutForm.offsetTop);
+    // Función para actualizar la cantidad de productos
+
+    function updateQuantity(delta) {
+        let currentValue = parseInt(quantityInput.value);
+        let newValue = currentValue + delta;
+        if (newValue < 1) {
+            newValue = 1;
+        }
+        quantityInput.value = newValue;
+    }
+
+    decreaseButton.addEventListener('click', function () {
+        updateQuantity(-1);
+    });
+
+    increaseButton.addEventListener('click', function () {
+        updateQuantity(1);
+    });
+
+    addToCartButton.addEventListener('click', function () {
+        const quantity = parseInt(quantityInput.value);
+        const price = parseFloat(document.querySelector('input[name="purchase"]:checked').value);
+        const productName = "FULL READY";
+        const productTotal = (price * quantity).toFixed(2);
+
+        const cartItem = document.createElement('li');
+        cartItem.className = "flex py-6";
+        cartItem.innerHTML = `
+            <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                <img src="./img/primex.webp" alt="Producto" class="h-full w-full object-cover object-center">
+            </div>
+            <div class="ml-4 flex flex-1 flex-col">
+                <div>
+                    <div class="flex justify-between text-base font-medium text-gray-900">
+                        <h3>${productName}</h3>
+                        <p class="total">$${productTotal}</p>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">Qty ${quantity}</p>
+                </div>
+                <div class="flex flex-1 items-end justify-between text-sm">
+                    <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500 remove-item">Remove</button>
+                </div>
+            </div>
+        `;
+
+        cartItems.appendChild(cartItem);
+        updateSubtotal();
+        cart.classList.remove('hidden');
+    });
+
+    function updateSubtotal() {
+        let subtotal = 0;
+        document.querySelectorAll('#cart-items > li').forEach(item => {
+            const itemPrice = parseFloat(item.querySelector('.total').innerText.replace('$', ''));
+            subtotal += itemPrice;
         });
+        cartSubtotal.innerText = `$${subtotal.toFixed(2)}`;
     }
 
-    if (checkoutButton) {
-        checkoutButton.addEventListener('click', function () {
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const city = document.getElementById('city').value.trim();
-            const country = document.getElementById('country').value.trim();
-            const zip = document.getElementById('zip').value.trim();
+    cartItems.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-item')) {
+            e.target.closest('li').remove();
+            updateSubtotal();
+        }
+    });
 
-            // Validar el formulario
-            if (!name || !email || !address || !city || !country || !zip) {
-                alert('Por favor, completa todos los campos del formulario.');
-                return;
-            }
+    closeCartButton.addEventListener('click', function () {
+        cart.classList.add('hidden');
+    });
 
-            if (!validateEmail(email)) {
-                alert('Por favor, ingresa un correo electrónico válido.');
-                return;
-            }
+    checkoutButton.addEventListener('click', async function (event) {
+        event.preventDefault();
 
-            // Enviar los datos a Stripe
-            fetch('/create-checkout-session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    address: address,
-                    city: city,
-                    country: country,
-                    zip: zip
-                })
+        const quantity = parseInt(quantityInput.value);
+        const purchase = parseFloat(document.querySelector('input[name="purchase"]:checked').value) * 100; // Convertir a centavos
+        const productName = "FULL READY";
+        const productImage = "./img/primex.webp";
+
+        const response = await fetch('/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: purchase,
+                quantity: quantity,
+                productName: productName,
+                productImage: productImage
             })
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(function (session) {
-                return stripe.redirectToCheckout({ sessionId: session.id });
-            })
-            .then(function (result) {
-                if (result.error) {
-                    alert(result.error.message);
-                }
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
         });
-    }
 
-    // Función para validar el correo electrónico
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
+        const session = await response.json();
+
+        // Redirige a Stripe Checkout
+        const result = await stripe.redirectToCheckout({ sessionId: session.id });
+        if (result.error) {
+            alert(result.error.message);
+        }
+    });
 });
-
-
-
-
-
-
-
 

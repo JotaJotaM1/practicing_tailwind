@@ -7,6 +7,7 @@
     <title>Document</title>
     <link href="./output.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body class="h-full bg-gray-100">
@@ -21,21 +22,12 @@
                             aria-controls="mobile-menu" aria-expanded="false">
                             <span class="absolute -inset-0.5"></span>
                             <span class="sr-only">Open main menu</span>
-                            <!--
-                      Icon when menu is closed.
-          
-                      Menu open: "hidden", Menu closed: "block"
-                    -->
+
                             <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
-                            <!--
-                      Icon when menu is open.
-          
-                      Menu open: "block", Menu closed: "hidden"
-                    -->
                             <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -50,7 +42,6 @@
                         </div>
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <a href="index.html"
                                     class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
                                     aria-current="page">Dashboard</a>
@@ -65,56 +56,11 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <button type="button"
-                            class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span class="absolute -inset-1.5"></span>
-                            <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                        </button>
-
-                        <!-- Profile dropdown -->
-                        <div class="relative ml-3">
-                            <div>
-                                <button type="button"
-                                    class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                    <span class="absolute -inset-1.5"></span>
-                                    <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="">
-                                </button>
-                            </div>
-
-                            <!--
-                      Dropdown menu, show/hide based on menu state.
-          
-                      Entering: "transition ease-out duration-100"
-                        From: "transform opacity-0 scale-95"
-                        To: "transform opacity-100 scale-100"
-                      Leaving: "transition ease-in duration-75"
-                        From: "transform opacity-100 scale-100"
-                        To: "transform opacity-0 scale-95"
-                    -->
-                            <div class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
-                                tabindex="-1">
-                                <a href="#" class="block hover:bg-zinc-200 px-4 py-2 text-sm text-gray-700"
-                                    role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                <a href="#" class="block hover:bg-zinc-200 px-4 py-2 text-sm text-gray-700"
-                                    role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                                <a href="#" class="block hover:bg-zinc-200 px-4 py-2 text-sm text-gray-700"
-                                    role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-                            </div>
-                        </div>
+                    <div>
+                        <i class="text-white text-sm bi bi-cart-fill"></i>
                     </div>
                 </div>
+            </div>
             </div>
 
             <!-- Mobile menu, show/hide based on menu state. -->
@@ -134,56 +80,128 @@
         </nav>
     </header>
 
+    <!-- Aqui empieza el main -->
+
     <main>
         <section>
-            <div class="container mx-auto px-4 py-8">
-                <h1 class="text-3xl font-bold mb-6">Nuestros Productos</h1>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- Producto 1 -->
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="https://via.placeholder.com/150" alt="Producto 1" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h2 class="text-xl font-bold">Producto 1</h2>
-                            <p class="text-gray-600">$19.99</p>
-                            <button id="buy-button" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Comprar</button>
+            <div class="container mx-auto max-w-4xl p-6">
+                <div class="flex flex-col md:flex-row items-center md:space-x-6">
+                    <!-- Imagen del producto -->
+                    <div class="md:w-1/2 flex justify-center">
+                        <img id="product-image" src="./img/primex.webp" alt="Producto" class="w-64 h-auto">
+                    </div>
+
+                    <!-- Detalles del producto -->
+                    <div class="md:w-1/2 mt-6 md:mt-0">
+                        <h2 id="product-name" class="text-2xl font-bold mb-2">FULL READY</h2>
+                        <p class="text-gray-600">HYDRATION</p>
+                        <p class="text-gray-600 mb-4">6PK</p>
+
+                        <form id="product-form">
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="radio" id="one-time" name="purchase" value="29.99" class="mr-2" checked>
+                                    <label for="one-time" class="flex items-center">
+                                        <span class="font-bold mr-1">$29.99</span>
+                                        <span class="text-gray-500">COMPRA ÚNICA</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="subscribe" name="purchase" value="28.49" class="mr-2">
+                                    <label for="subscribe" class="flex items-center">
+                                        <span class="font-bold mr-1">$28.49</span>
+                                        <span class="text-gray-500">SUSCRIBIRSE Y AHORRAR 5%</span>
+                                    </label>
+                                </div>
+                                <p class="text-gray-500 text-sm mt-1">SUSCRÍBETE PARA RECIBIR UN 5% DE DESCUENTO EN CADA
+                                    ENTREGA.</p>
+                            </div>
+                        </form>
+                        <div class="flex items-center mb-6">
+                            <button id="decrease"
+                                class="py-2 px-4 bg-gray-200 border border-gray-300 rounded-l">-</button>
+                            <input type="text" id="quantity" value="1"
+                                class="py-2 px-4 w-16 text-center bg-white border-t border-b border-gray-300">
+                            <button id="increase"
+                                class="py-2 px-4 bg-gray-200 border border-gray-300 rounded-r">+</button>
+                        </div>
+
+                        <button id="add-to-cart" class="w-[150px] bg-black text-white py-3 rounded">ADD TO CART</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carrito de compras -->
+
+        <div class="relative z-10 hidden" id="shopping-cart" aria-labelledby="slide-over-title" role="dialog"
+            aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="fixed inset-0 overflow-hidden">
+                <div class="absolute inset-0 overflow-hidden">
+                    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                        <div class="pointer-events-auto w-screen max-w-md">
+                            <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                                <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                                    <div class="flex items-start justify-between">
+                                        <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping
+                                            cart
+                                        </h2>
+                                        <div class="ml-3 flex h-7 items-center">
+                                            <button type="button"
+                                                class="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                                                id="close-cart">
+                                                <span class="absolute -inset-0.5"></span>
+                                                <span class="sr-only">Close panel</span>
+                                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-8">
+                                        <div class="flow-root">
+                                            <ul role="list" class="-my-6 divide-y divide-gray-200" id="cart-items">
+                                                <!-- Productos del carrito -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                                    <div class="flex justify-between text-base font-medium text-gray-900">
+                                        <p>Subtotal</p>
+                                        <p id="cart-subtotal">$0.00</p>
+                                    </div>
+                                    <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.
+                                    </p>
+                                    <div class="mt-6">
+                                        <a href="#" id="checkout-button"
+                                            class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+                                    </div>
+                                    <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+                                        <p>
+                                            or
+                                            <button type="button"
+                                                class="font-medium text-indigo-600 hover:text-indigo-500">
+                                                Continue Shopping
+                                                <span aria-hidden="true"> &rarr;</span>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <form id="checkout-form" class="bg-white shadow-md rounded-lg p-6 mb-8 hidden">
-                <h2 class="text-2xl font-bold mb-4">Checkout</h2>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nombre Completo</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Nombre Completo" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Correo Electrónico</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Correo Electrónico" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="address">Dirección</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" type="text" placeholder="Dirección" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="city">Ciudad</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="city" type="text" placeholder="Ciudad" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="country">País</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="country" type="text" placeholder="País" required>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="zip">Código Postal</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="zip" type="text" placeholder="Código Postal" required>
-                </div>
-                <div class="flex items-center justify-between">
-                    <button id="checkout-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                        Pagar
-                    </button>
-                </div>
-            </form>
-        </section>
+        </div>
     </main>
+
+    <!-- footer -->
 
     <footer class="bg-white dark:bg-gray-900">
         <div class="mx-auto w-full max-w-screen-xl pt-20 pb-6 px-2 sm:px-6 lg:px-8 lg:pb-8">
@@ -286,8 +304,8 @@
         </div>
     </footer>
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="js/stripe.js"></script>
     <script src="js/script.js"></script>
-
 </body>
 
 </html>
