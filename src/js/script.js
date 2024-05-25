@@ -18,10 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
             mobileMenu.classList.add('hidden');
             menuButton.setAttribute('aria-expanded', 'false');
         }
-
-        if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
-            userMenu.classList.add('hidden');
-        }
     });
 });
 
@@ -60,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeCartButton = document.getElementById('close-cart');
     const checkoutButton = document.getElementById('checkout-button');
 
-    // Función para actualizar la cantidad de productos
+    const stripe = Stripe('pk_test_51PDrJ6KNL9CjG5renXP2Myroedu8mdGrZgXGH7SIGEt6J8JCMncgrpFVLziI5FGbQGFIizetpMtmxHdQl18MUejG00AfuLwR6o');
 
     function updateQuantity(delta) {
         let currentValue = parseInt(quantityInput.value);
@@ -80,16 +76,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     addToCartButton.addEventListener('click', function () {
+        // Verificar si ya hay un producto en el carrito
+        if (cartItems.children.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Carrito lleno',
+                text: 'Solo puedes agregar un producto al carrito.',
+                confirmButtonText: 'Entendido'
+            });
+            return;
+        }
+
         const quantity = parseInt(quantityInput.value);
         const price = parseFloat(document.querySelector('input[name="purchase"]:checked').value);
         const productName = "FULL READY";
+        const productImage = "http://localhost:4242/img/primex.webp"; // Ruta ajustada
         const productTotal = (price * quantity).toFixed(2);
 
         const cartItem = document.createElement('li');
         cartItem.className = "flex py-6";
         cartItem.innerHTML = `
             <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                <img src="./img/primex.webp" alt="Producto" class="h-full w-full object-cover object-center">
+                <img src="${productImage}" alt="${productName}" class="h-full w-full object-cover object-center">
             </div>
             <div class="ml-4 flex flex-1 flex-col">
                 <div>
@@ -131,33 +139,52 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     checkoutButton.addEventListener('click', async function (event) {
-        event.preventDefault();
+        event.preventDefault(); // Evita la acción por defecto del enlace
 
-        const quantity = parseInt(quantityInput.value);
-        const purchase = parseFloat(document.querySelector('input[name="purchase"]:checked').value) * 100; // Convertir a centavos
-        const productName = "FULL READY";
-        const productImage = "./img/primex.webp";
+        const cartData = [];
+        document.querySelectorAll('#cart-items > li').forEach(item => {
+            const productName = item.querySelector('h3').innerText;
+            const productImage = item.querySelector('img').src;
+            const quantity = parseInt(item.querySelector('.text-gray-500').innerText.replace('Qty ', ''));
+            const amount = parseFloat(item.querySelector('.total').innerText.replace('$', '')) / quantity * 100; // Convertir a centavos
+
+            cartData.push({
+                productName: productName,
+                productImage: productImage,
+                amount: amount,
+                quantity: quantity
+            });
+        });
+
+        console.log("Cart Data:", cartData); // Log para verificar los datos antes de enviarlos
+        debugger; // <<<<<<<< INSTRUCCIÓN PARA PAUSAR EL CÓDIGO
 
         const response = await fetch('/create-checkout-session', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                amount: purchase,
-                quantity: quantity,
-                productName: productName,
-                productImage: productImage
-            })
+            body: JSON.stringify({ cart: cartData })
         });
 
         const session = await response.json();
 
-        // Redirige a Stripe Checkout
+        console.log("Session ID:", session.id); // Log para verificar el session ID
+
+        // Redirige a Stripe Checkout en la misma ventana
         const result = await stripe.redirectToCheckout({ sessionId: session.id });
         if (result.error) {
             alert(result.error.message);
         }
     });
 });
+
+
+
+
+
+
+
+
+
 

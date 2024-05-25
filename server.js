@@ -9,28 +9,38 @@ app.use(bodyParser.json());
 
 app.post('/create-checkout-session', async (req, res) => {
     try {
+        const { cart } = req.body;
+
+        console.log("Received Cart Data:", cart); // Log para verificar los datos recibidos
+        debugger; // <<<<<<<< INSTRUCCIÓN PARA PAUSAR EL CÓDIGO
+
+        const line_items = cart.map(item => ({
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    name: item.productName,
+                    images: [item.productImage],
+                },
+                unit_amount: item.amount,
+            },
+            quantity: item.quantity, // Asegúrate de que la cantidad esté incluida
+        }));
+
+        console.log("Line Items:", line_items); // Log para verificar los line items
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            line_items: [
-                {
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: req.body.productName, // Nombre del producto desde el formulario
-                            images: [req.body.productImage] // Imagen del producto desde el formulario
-                        },
-                        unit_amount: req.body.amount, // Monto en centavos
-                    },
-                    quantity: req.body.quantity,
-                },
-            ],
+            line_items: line_items,
             mode: 'payment',
             success_url: 'http://localhost:4242/success.html',
             cancel_url: 'http://localhost:4242/cancel.html',
         });
 
+        console.log("Session Created:", session.id); // Log para verificar el session ID creado
+
         res.json({ id: session.id });
     } catch (error) {
+        console.error("Error creating session:", error); // Log para errores
         res.status(500).send({ error: error.message });
     }
 });
